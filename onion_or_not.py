@@ -104,35 +104,35 @@ elif model_picker == 'Naive Bayes, NLTK Processed':
     # ! only used for initial preprocessing
     # st.warning('This can be slow. Please wait for the model to complete. ')
     # df['headline_tokens'] = df['text'].apply(lambda x: word_tokenize(x))
-    # stop_words = stopwords.words('english')
+    stop_words = stopwords.words('english')
 
-    # @st.cache(persist=True, show_spinner=True)
-    # def remove_noise(headline_tokens, stop_words = ()):
-    #     cleaned_tokens = []
+    @st.cache(persist=True, show_spinner=True)
+    def remove_noise(headline_tokens, stop_words = ()):
+        cleaned_tokens = []
 
-    #     for token, tag in pos_tag(headline_tokens):
-    #         if tag.startswith('NN'):
-    #             pos = 'n'
-    #         elif tag.startswith('VB'):
-    #             pos = 'v'
-    #         else:
-    #             pos = 'a'
+        for token, tag in pos_tag(headline_tokens):
+            if tag.startswith('NN'):
+                pos = 'n'
+            elif tag.startswith('VB'):
+                pos = 'v'
+            else:
+                pos = 'a'
 
-    #         lemmatizer = WordNetLemmatizer()
-    #         token = lemmatizer.lemmatize(token, pos)
+            lemmatizer = WordNetLemmatizer()
+            token = lemmatizer.lemmatize(token, pos)
 
-    #         if len(token) > 0 and token not in string.punctuation and token.lower() not in stop_words:
-    #             cleaned_tokens.append(token.lower())
-    #     return cleaned_tokens
+            if len(token) > 0 and token not in string.punctuation and token.lower() not in stop_words:
+                cleaned_tokens.append(token.lower())
+        return cleaned_tokens
 
 
-    # # headline_tokens_cleaned = [remove_noise(x, stop_words) for x in headline_tokens]
+    # headline_tokens_cleaned = [remove_noise(x, stop_words) for x in headline_tokens]
     # onion_tokens = [word_tokenize(x) for x in onion_list]
     # not_onion_tokens = [word_tokenize(x) for x in not_onion_list]
     # onion_tokens_list = [remove_noise(tokens, stop_words) for tokens in onion_tokens]
     # not_onion_tokens_list = [remove_noise(tokens, stop_words) for tokens in not_onion_tokens]
 
-    # # st.write(onion_tokens_list[0])
+    # st.write(onion_tokens_list[0])
 
     # def headlines_for_model(headlines):
     #     for headline_token in headlines:
@@ -151,22 +151,27 @@ elif model_picker == 'Naive Bayes, NLTK Processed':
     # test_data = dataset[12600:]
 
     # # ! offload the data into my github then call it for the classifier
-    # pd.DataFrame(train_data).to_csv('train_data.csv')
-    # pd.DataFrame(test_data).to_csv('test_data.csv')
+    # pd.DataFrame(train_data).to_csv('train_data.csv', index=False)
+    # pd.DataFrame(test_data).to_csv('test_data.csv', index=False)
 
+    # train_url = 'https://github.com/boblandsky/onion_ml/raw/master/train_data.csv'
+    # test_url = 'https://github.com/boblandsky/onion_ml/raw/master/test_data.csv'
 
+    # train_data = pd.read_csv(train_url, usecols=[1, 2])
+    # test_data = pd.read_csv(test_url, usecols=[1, 2])
+    # st.write(train_data)
 
-    clf_nb = NaiveBayesClassifier.train(train_data)
-    nb_acc = round(classify.accuracy(clf_nb, test_data), 4)*100
-    st.write(f'Accuracy is {nb_acc}%')
+    # clf_nb = NaiveBayesClassifier.train(train_data)
+    # nb_acc = round(classify.accuracy(clf_nb, test_data), 4)*100
+    # st.write(f'Accuracy is {nb_acc}%')
 
-    test_nb_headline = st.text_input("Give me a headline to predict. A sample one is provided.",
-                                      "MLS Commissioner Relieved That Nobody Knows Him by Name")
+    # test_nb_headline = st.text_input("Give me a headline to predict. A sample one is provided.",
+    #                                   "MLS Commissioner Relieved That Nobody Knows Him by Name")
 
-    if st.button('Onion or not? Round 2'):
-        test_nb_tokens = remove_noise(word_tokenize(test_nb_headline))
-        results_nb = clf_nb.classify(dict([token, True] for token in test_nb_tokens))
-        if results_nb == 1:
-            st.write("It's from the Onion!")
-        else:
-            st.write("It's not from the Onion!")
+    # if st.button('Onion or not? Round 2'):
+    #     test_nb_tokens = remove_noise(word_tokenize(test_nb_headline))
+    #     results_nb = clf_nb.classify(dict([token, True] for token in test_nb_tokens))
+    #     if results_nb == 1:
+    #         st.write("It's from the Onion!")
+    #     else:
+    #         st.write("It's not from the Onion!")
