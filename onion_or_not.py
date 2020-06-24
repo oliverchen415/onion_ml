@@ -51,20 +51,6 @@ onion_list = onion['text'].tolist()
 not_onion_list = not_onion['text'].tolist()
 
 st.title('Onion or Not?')
-st.write('Taking a dataset of headlines that are either from the Onion or '
-         "from the r/NotTheOnion subreddit, let's develop a model that can "
-         'determine whether or not the headline is an Onion headline or not!'
-         )
-st.info('1 indicates a headline by the Onion, '
-        'while 0 is a headline that could be found on r/NotTheOnion.')
-st.subheader('Sample of dataset used to develop the model (18000 samples)')
-st.markdown('The dataset used to develop the model is found '
-            '[here. ](https://www.kaggle.com/chrisfilo/onion-or-not)'
-            'The dataset for the model is found on the project '
-            '[Github.](https://github.com/boblandsky/onion_ml/)'
-            )
-st.info('The data was originally 24000 samples, and rebalanced to 18000 (9000 samples of each).')
-st.write(df.head())
 
 model_picker = st.sidebar.radio('Select different methods for prediction.',
                         ('Logistic Regression, Quick and Dirty',
@@ -79,6 +65,8 @@ st.sidebar.markdown("The logistic regression model uses first vectorization usin
                     '[naive Bayes classifer ](https://en.wikipedia.org/wiki/Naive_Bayes_classifier)'
                     'for classification. The third model uses additional normalization '
                     '(e.g. [lemmatization](https://en.wikipedia.org/wiki/Lemmatisation)). '
+                    'The processing is done using the Natural Language Toolkit (NLTK), '
+                    'a Python library used for natural language processing (NLP).'
                     )
 st.sidebar.info('"Quick and Dirty" means that I did not further process the data. '
                 'The full dataset from the Github is what is going into the models. '
@@ -86,7 +74,6 @@ st.sidebar.info('"Quick and Dirty" means that I did not further process the data
                 'The train/test splits for all 3 methods are 70/30.'
                 )
 
-st.markdown('---')
 st.warning('Despite me saying "Quick and dirty", '
            'running these models can take some time, please be patient.')
 
@@ -232,3 +219,27 @@ if model_picker == 'Naive Bayes, Quick and Dirty':
             st.write("It's not from the Onion!")
         else:
             st.write("It's from the Onion!")
+
+st.markdown('---')
+st.subheader('Background Info')
+st.write('Taking a dataset of headlines that are either from the Onion or '
+         "from the r/NotTheOnion subreddit, let's develop a model that can "
+         'determine whether or not the headline is an Onion headline or not!'
+         )
+st.write('The Onion is a satirical newspaper that publishes articles '
+         'on current events, oftentimes making everyday events as '
+         'newsworthy. r/NotTheOnion is a subreddit where users can post '
+         'news articles that sound like they belong on the Onion.'
+         )
+st.subheader('Sample of dataset used to develop the model (18000 samples)')
+st.markdown('The dataset used to develop the model is found '
+            '[here. ](https://www.kaggle.com/chrisfilo/onion-or-not)'
+            'The dataset for the model is found on the project '
+            '[Github.](https://github.com/boblandsky/onion_ml/)'
+            )
+st.info('1 indicates a headline by the Onion, '
+        'while 0 is a real headline found on r/NotTheOnion. '
+        'The data was originally 24000 samples, and rebalanced to 18000 (9000 samples of each). '
+        'The first five rows are shown below.'
+        )
+st.table(df.head())
