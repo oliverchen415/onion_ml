@@ -14,7 +14,7 @@ Here, I use two different estimators from Python's scikit-learn (logistic regres
 
 The app allows you to select three different models:
   * Logistic Regression, no NLTK processing
-  * Naive Bayes, no NLTK processing
+  * ~Naive Bayes, no NLTK processing~ Currently not working, crashes the Heroku app
   * Naive Bayes, NLTK processed
   
 Clicking on the Onion or Not button will run your selected model and return a prediction of whether or not the headline is from the Onion or r/NotTheOnion.
