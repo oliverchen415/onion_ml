@@ -54,14 +54,15 @@ st.title('Onion or Not?')
 
 model_picker = st.sidebar.radio('Select different methods for prediction.',
                         ('Logistic Regression, Quick and Dirty',
-                         'Naive Bayes, Quick and Dirty',
+                        #  'Naive Bayes, Quick and Dirty',
                          'Naive Bayes, NLTK Processed')
                         )
 
 st.sidebar.markdown("The logistic regression model uses first vectorization using scikit-learn's "
                     '[TFIDF](https://en.wikipedia.org/wiki/Tf%E2%80%93idf) Vectorizer  '
                     'to adjust how important a word is to the corpus. '
-                    'The second and third models use a '
+                    # 'The second and third models use a '
+                    'The second model uses a '
                     '[naive Bayes classifer ](https://en.wikipedia.org/wiki/Naive_Bayes_classifier)'
                     'for classification. The third model uses additional normalization '
                     '(e.g. [lemmatization](https://en.wikipedia.org/wiki/Lemmatisation)). '
@@ -71,7 +72,7 @@ st.sidebar.markdown("The logistic regression model uses first vectorization usin
 st.sidebar.info('"Quick and Dirty" means that I did not further process the data. '
                 'The full dataset from the Github is what is going into the models. '
                 'The NLTK processed data is split into test and train sets. '
-                'The train/test splits for all 3 methods are 70/30.'
+                'The train/test splits for all methods are 70/30.'
                 )
 
 st.warning('Despite me saying "Quick and dirty", '
@@ -200,25 +201,25 @@ elif model_picker == 'Naive Bayes, NLTK Processed':
     # else:
     #     st.write('Sweet!')
 
-if model_picker == 'Naive Bayes, Quick and Dirty':
-    clf_gnb = GaussianNB()
-    clf_gnb.fit(X_train.toarray(), l_train)
-    score = clf_gnb.score(X_test.toarray(), l_test)
-    rounded_score = round(score, 4)*100
-    # print('Accuracy: ', score)
-    st.write(f'Accuracy on test set: {rounded_score}%')
+# if model_picker == 'Naive Bayes, Quick and Dirty':
+#     clf_gnb = GaussianNB()
+#     clf_gnb.fit(X_train.toarray(), l_train)
+#     score = clf_gnb.score(X_test.toarray(), l_test)
+#     rounded_score = round(score, 4)*100
+#     # print('Accuracy: ', score)
+#     st.write(f'Accuracy on test set: {rounded_score}%')
 
-    test_gnb_headline = st.text_input("Give me a headline to predict. A sample one is provided.",
-                                      "MLS Commissioner Relieved That Nobody Knows Him by Name")
+#     test_gnb_headline = st.text_input("Give me a headline to predict. A sample one is provided.",
+#                                       "MLS Commissioner Relieved That Nobody Knows Him by Name")
 
-    if st.button('Onion or not? Round 2'):
-        test_vect = vectorizer.transform([test_gnb_headline])
-        results = clf_gnb.predict(test_vect.toarray())
-        #st.write(results)
-        if results[0] == 0:
-            st.write("It's not from the Onion!")
-        else:
-            st.write("It's from the Onion!")
+#     if st.button('Onion or not? Round 2'):
+#         test_vect = vectorizer.transform([test_gnb_headline])
+#         results = clf_gnb.predict(test_vect.toarray())
+#         #st.write(results)
+#         if results[0] == 0:
+#             st.write("It's not from the Onion!")
+#         else:
+#             st.write("It's from the Onion!")
 
 st.markdown('---')
 st.subheader('Background Info')
