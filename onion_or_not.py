@@ -25,8 +25,18 @@ import random
 
 data_url = 'https://github.com/boblandsky/onion_ml/raw/master/onion_resampled.csv'
 df = pd.read_csv(data_url)
+df.drop(columns=['Unnamed: 0'], inplace=True)
 df_headlines = df['text'].values
 df_labels = df['label'].values
+
+onion = df[df['label'] == 1].copy()
+not_onion = df[df['label'] == 0].copy()
+
+onion.drop(columns = ['label'], inplace=True)
+not_onion.drop(columns = ['label'], inplace=True)
+
+onion_list = onion['text'].tolist()
+not_onion_list = not_onion['text'].tolist()
 
 st.title('Onion or Not?')
 st.write('Taking a dataset of headlines that are either from the Onion or '
@@ -91,40 +101,72 @@ if model_picker == 'Logistic Regression, Quick and Dirty':
 
 elif model_picker == 'Naive Bayes, NLTK Processed':
     st.header('Model used: Naive Bayes, processed with NLTK')
-    st.warning('This can be slow. Press the button below to initate the processing.')
-    headline_tokens = df['text'].apply(lambda x: word_tokenize(x))
-    stop_words = stopwords.words('english')
+    # ! only used for initial preprocessing
+    # st.warning('This can be slow. Please wait for the model to complete. ')
+    # df['headline_tokens'] = df['text'].apply(lambda x: word_tokenize(x))
+    # stop_words = stopwords.words('english')
 
-    @st.cache(persist=True, show_spinner=True)
-    def remove_noise(headline_tokens, stop_words = ()):
-        cleaned_tokens = []
+    # @st.cache(persist=True, show_spinner=True)
+    # def remove_noise(headline_tokens, stop_words = ()):
+    #     cleaned_tokens = []
 
-        for token, tag in pos_tag(headline_tokens):
-            token = re.sub('[^A-Za-z0-9]+', '', token)
-            if tag.startswith('NN'):
-                pos = 'n'
-            elif tag.startswith('VB'):
-                pos = 'v'
-            else:
-                pos = 'a'
+    #     for token, tag in pos_tag(headline_tokens):
+    #         if tag.startswith('NN'):
+    #             pos = 'n'
+    #         elif tag.startswith('VB'):
+    #             pos = 'v'
+    #         else:
+    #             pos = 'a'
 
-            lemmatizer = WordNetLemmatizer()
-            token = lemmatizer.lemmatize(token, pos)
+    #         lemmatizer = WordNetLemmatizer()
+    #         token = lemmatizer.lemmatize(token, pos)
 
-            if len(token) > 0 and token not in string.punctuation and token.lower() not in stop_words:
-                cleaned_tokens.append(token.lower())
-        return cleaned_tokens
+    #         if len(token) > 0 and token not in string.punctuation and token.lower() not in stop_words:
+    #             cleaned_tokens.append(token.lower())
+    #     return cleaned_tokens
 
-    if st.button('Confirm NLTK processing and classification'):
-        # st.write(remove_noise(headline_tokens[0], stop_words=stop_words))
-        headline_tokens_cleaned = headline_tokens.apply(lambda x: remove_noise(x, stop_words))
-        # new_df = pd.concat([headline_tokens_cleaned, df['label']], axis=1)
-        # st.write(new_df.head())
-        
-        
 
-        # new_df['zipped'] = list(zip(df['text'], df['label']))
-        # train_data = new_df['zipped'][:12600]
-        # test_data = new_df['zipped'][12600:]
-        # clf_nb = NaiveBayesClassifier.train(train_data)
-        # st.write(f'Accuracy is {classify.accuracy(clf_nb, test_data)}')
+    # # headline_tokens_cleaned = [remove_noise(x, stop_words) for x in headline_tokens]
+    # onion_tokens = [word_tokenize(x) for x in onion_list]
+    # not_onion_tokens = [word_tokenize(x) for x in not_onion_list]
+    # onion_tokens_list = [remove_noise(tokens, stop_words) for tokens in onion_tokens]
+    # not_onion_tokens_list = [remove_noise(tokens, stop_words) for tokens in not_onion_tokens]
+
+    # # st.write(onion_tokens_list[0])
+
+    # def headlines_for_model(headlines):
+    #     for headline_token in headlines:
+    #         yield dict([token, True] for token in headline_token)
+
+    # onion_list_for_model = headlines_for_model(onion_tokens_list)
+    # not_onion_list_for_model = headlines_for_model(not_onion_tokens_list)
+
+    # onion_dataset = [(onion_dict, 1) for onion_dict in onion_list_for_model]
+    # not_onion_dataset = [(onion_dict, 0) for onion_dict in not_onion_list_for_model]
+
+    # dataset = onion_dataset + not_onion_dataset
+    # random.shuffle(dataset)
+
+    # train_data = dataset[:12600]
+    # test_data = dataset[12600:]
+
+    # # ! offload the data into my github then call it for the classifier
+    # pd.DataFrame(train_data).to_csv('train_data.csv')
+    # pd.DataFrame(test_data).to_csv('test_data.csv')
+
+
+
+    clf_nb = NaiveBayesClassifier.train(train_data)
+    nb_acc = round(classify.accuracy(clf_nb, test_data), 4)*100
+    st.write(f'Accuracy is {nb_acc}%')
+
+    test_nb_headline = st.text_input("Give me a headline to predict. A sample one is provided.",
+                                      "MLS Commissioner Relieved That Nobody Knows Him by Name")
+
+    if st.button('Onion or not? Round 2'):
+        test_nb_tokens = remove_noise(word_tokenize(test_nb_headline))
+        results_nb = clf_nb.classify(dict([token, True] for token in test_nb_tokens))
+        if results_nb == 1:
+            st.write("It's from the Onion!")
+        else:
+            st.write("It's not from the Onion!")
