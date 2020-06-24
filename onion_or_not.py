@@ -57,16 +57,18 @@ model_picker = st.sidebar.radio('Select different methods for prediction.',
                         #  'Naive Bayes, Quick and Dirty',
                          'Naive Bayes, NLTK Processed')
                         )
-
+st.sidebar.warning('There was going to be a "Naive Bayes, Quick and Dirty", but it '
+                   'crashes the Heroku instance, so it has been removed and may '
+                   'whenever I get around to fixing whatever causes it.'
+                   )
 st.sidebar.markdown("The logistic regression model uses first vectorization using scikit-learn's "
                     '[TFIDF](https://en.wikipedia.org/wiki/Tf%E2%80%93idf) Vectorizer  '
                     'to adjust how important a word is to the corpus. '
                     # 'The second and third models use a '
-                    'The second model uses a '
-                    '[naive Bayes classifer ](https://en.wikipedia.org/wiki/Naive_Bayes_classifier)'
-                    'for classification. The third model uses additional normalization '
-                    '(e.g. [lemmatization](https://en.wikipedia.org/wiki/Lemmatisation)). '
-                    'The processing is done using the Natural Language Toolkit (NLTK), '
+                    '[A naive Bayes classifer ](https://en.wikipedia.org/wiki/Naive_Bayes_classifier)'
+                    'is the other model for classification. Processing '
+                    '(e.g. [lemmatization](https://en.wikipedia.org/wiki/Lemmatisation)) '
+                    'is done using the Natural Language Toolkit (NLTK), '
                     'a Python library used for natural language processing (NLP).'
                     )
 st.sidebar.info('"Quick and Dirty" means that I did not further process the data. '
