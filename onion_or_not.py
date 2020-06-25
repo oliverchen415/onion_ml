@@ -59,7 +59,7 @@ model_picker = st.sidebar.radio('Select different methods for prediction.',
                         )
 st.sidebar.warning('There was going to be a "Naive Bayes, Quick and Dirty", but it '
                    'crashes the Heroku instance, so it has been removed and may '
-                   'whenever I get around to fixing whatever causes it.'
+                   'return whenever I get around to fixing whatever causes it.'
                    )
 st.sidebar.markdown("The logistic regression model uses first vectorization using scikit-learn's "
                     '[TFIDF](https://en.wikipedia.org/wiki/Tf%E2%80%93idf) Vectorizer  '
@@ -186,7 +186,7 @@ elif model_picker == 'Naive Bayes, NLTK Processed':
     test_nb_headline = st.text_input("Give me a headline to predict. A sample one is provided.",
                                       "MLS Commissioner Relieved That Nobody Knows Him by Name")
 
-    if st.button('Onion or not? Round 3'):
+    if st.button('Onion or not? NLTK Edition'):
         test_nb_tokens = remove_noise(word_tokenize(test_nb_headline))
         results_nb = clf_nb.classify(dict([token, True] for token in test_nb_tokens))
         if results_nb == 1:
