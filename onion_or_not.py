@@ -54,7 +54,7 @@ st.title('Onion or Not?')
 
 model_picker = st.sidebar.radio('Select different methods for prediction.',
                         ('Logistic Regression, Quick and Dirty',
-                        #  'Naive Bayes, Quick and Dirty',
+                         'Naive Bayes, Quick and Dirty',
                          'Naive Bayes, NLTK Processed')
                         )
 st.sidebar.warning('There was going to be a "Naive Bayes, Quick and Dirty", but it '
@@ -77,14 +77,19 @@ st.sidebar.info('"Quick and Dirty" means that I did not further process the data
                 'The train/test splits for all methods are 70/30.'
                 )
 
-st.warning('Despite me saying "Quick and dirty", '
-           'running these models can take some time, please be patient.')
+st.warning('Running these models can take some time, please be patient.')
 
 if model_picker == 'Logistic Regression, Quick and Dirty':
     st.header('Model used: Logistic Regression')
 
-    clf_adj = LogisticRegression()
-    clf_adj.fit(X_train, l_train)
+    # clf_adj = LogisticRegression()
+    # clf_adj.fit(X_train, l_train)
+
+    # with open('linreg.pkl', 'wb') as f:
+    #     pickle.dump(clf_adj, f)
+
+    linreg_pickle_url = 'https://github.com/boblandsky/onion_ml/raw/master/linreg.pkl'
+    clf_adj = pd.read_pickle(linreg_pickle_url)
     score = clf_adj.score(X_test, l_test)
     rounded_score = round(score, 4)*100
     # print('Accuracy: ', score)
@@ -177,9 +182,14 @@ elif model_picker == 'Naive Bayes, NLTK Processed':
 
     train_data_tuple = list(zip(train_data['0'], train_data['1']))
     test_data_tuple = list(zip(test_data['0'], test_data['1']))
-    # st.write(type(train_data['0'][0]))
+    # # st.write(type(train_data['0'][0]))
 
-    clf_nb = NaiveBayesClassifier.train(train_data_tuple)
+    # clf_nb = NaiveBayesClassifier.train(train_data_tuple)
+
+    # with open('nb_nltk.pkl', 'wb') as f:
+    #     pickle.dump(clf_nb, f)
+    nb_pickle_url = 'https://github.com/boblandsky/onion_ml/raw/master/nb_nltk.pkl'
+    clf_nb = pd.read_pickle(nb_pickle_url)
     nb_acc = round(classify.accuracy(clf_nb, test_data_tuple), 4)*100
     st.write(f'Accuracy on test set: {nb_acc}%')
 
@@ -203,25 +213,29 @@ elif model_picker == 'Naive Bayes, NLTK Processed':
     # else:
     #     st.write('Sweet!')
 
-# if model_picker == 'Naive Bayes, Quick and Dirty':
-#     clf_gnb = GaussianNB()
-#     clf_gnb.fit(X_train.toarray(), l_train)
-#     score = clf_gnb.score(X_test.toarray(), l_test)
-#     rounded_score = round(score, 4)*100
-#     # print('Accuracy: ', score)
-#     st.write(f'Accuracy on test set: {rounded_score}%')
+if model_picker == 'Naive Bayes, Quick and Dirty':
+    # clf_gnb = GaussianNB()
+    # clf_gnb.fit(X_train.toarray(), l_train)
+    # with open('nb.pkl', 'wb') as f:
+    #     pickle.dump(clf_gnb, f)
+    gnb_url = 'https://github.com/boblandsky/onion_ml/raw/master/nb.pkl'
+    clf_gnb = pd.read_pickle(gnb_url)
+    score = clf_gnb.score(X_test.toarray(), l_test)
+    rounded_score = round(score, 4)*100
+    # print('Accuracy: ', score)
+    st.write(f'Accuracy on test set: {rounded_score}%')
 
-#     test_gnb_headline = st.text_input("Give me a headline to predict. A sample one is provided.",
-#                                       "MLS Commissioner Relieved That Nobody Knows Him by Name")
+    test_gnb_headline = st.text_input("Give me a headline to predict. A sample one is provided.",
+                                      "MLS Commissioner Relieved That Nobody Knows Him by Name")
 
-#     if st.button('Onion or not? Round 2'):
-#         test_vect = vectorizer.transform([test_gnb_headline])
-#         results = clf_gnb.predict(test_vect.toarray())
-#         #st.write(results)
-#         if results[0] == 0:
-#             st.write("It's not from the Onion!")
-#         else:
-#             st.write("It's from the Onion!")
+    if st.button('Onion or not? Round 2'):
+        test_vect = vectorizer.transform([test_gnb_headline])
+        results = clf_gnb.predict(test_vect.toarray())
+        #st.write(results)
+        if results[0] == 0:
+            st.write("It's not from the Onion!")
+        else:
+            st.write("It's from the Onion!")
 
 st.markdown('---')
 st.subheader('Background Info')
