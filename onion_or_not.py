@@ -54,7 +54,7 @@ st.title('Onion or Not?')
 
 model_picker = st.sidebar.radio('Select different methods for prediction.',
                         ('Logistic Regression, Quick and Dirty',
-                         'Naive Bayes, Quick and Dirty',
+                        #  'Naive Bayes, Quick and Dirty',
                          'Naive Bayes, NLTK Processed')
                         )
 st.sidebar.warning('There was going to be a "Naive Bayes, Quick and Dirty", but it '
@@ -213,29 +213,29 @@ elif model_picker == 'Naive Bayes, NLTK Processed':
     # else:
     #     st.write('Sweet!')
 
-if model_picker == 'Naive Bayes, Quick and Dirty':
-    # clf_gnb = GaussianNB()
-    # clf_gnb.fit(X_train.toarray(), l_train)
-    # with open('nb.pkl', 'wb') as f:
-    #     pickle.dump(clf_gnb, f)
-    gnb_url = 'https://github.com/boblandsky/onion_ml/raw/master/nb.pkl'
-    clf_gnb = pd.read_pickle(gnb_url)
-    score = clf_gnb.score(X_test.toarray(), l_test)
-    rounded_score = round(score, 4)*100
-    # print('Accuracy: ', score)
-    st.write(f'Accuracy on test set: {rounded_score}%')
+# if model_picker == 'Naive Bayes, Quick and Dirty':
+#     # clf_gnb = GaussianNB()
+#     # clf_gnb.fit(X_train.toarray(), l_train)
+#     # with open('nb.pkl', 'wb') as f:
+#     #     pickle.dump(clf_gnb, f)
+#     gnb_url = 'https://github.com/boblandsky/onion_ml/raw/master/nb.pkl'
+#     clf_gnb = pd.read_pickle(gnb_url)
+#     score = clf_gnb.score(X_test.toarray(), l_test)
+#     rounded_score = round(score, 4)*100
+#     # print('Accuracy: ', score)
+#     st.write(f'Accuracy on test set: {rounded_score}%')
 
-    test_gnb_headline = st.text_input("Give me a headline to predict. A sample one is provided.",
-                                      "MLS Commissioner Relieved That Nobody Knows Him by Name")
+#     test_gnb_headline = st.text_input("Give me a headline to predict. A sample one is provided.",
+#                                       "MLS Commissioner Relieved That Nobody Knows Him by Name")
 
-    if st.button('Onion or not? Round 2'):
-        test_vect = vectorizer.transform([test_gnb_headline])
-        results = clf_gnb.predict(test_vect.toarray())
-        #st.write(results)
-        if results[0] == 0:
-            st.write("It's not from the Onion!")
-        else:
-            st.write("It's from the Onion!")
+#     if st.button('Onion or not? Round 2'):
+#         test_vect = vectorizer.transform([test_gnb_headline])
+#         results = clf_gnb.predict(test_vect.toarray())
+#         #st.write(results)
+#         if results[0] == 0:
+#             st.write("It's not from the Onion!")
+#         else:
+#             st.write("It's from the Onion!")
 
 st.markdown('---')
 st.subheader('Background Info')
