@@ -57,9 +57,8 @@ model_picker = st.sidebar.radio('Select different methods for prediction.',
                         #  'Naive Bayes, Quick and Dirty',
                          'Naive Bayes, NLTK Processed')
                         )
-st.sidebar.warning('There was going to be a "Naive Bayes, Quick and Dirty", but it '
-                   'crashes the Heroku instance, so it has been removed and may '
-                   'return whenever I get around to fixing whatever causes it.'
+st.sidebar.warning('**Update:** Still have no solutions for the crashing with the naive Bayes model, '
+                   'perhaps I will look for another model in place of the naive Bayes. '
                    )
 st.sidebar.markdown("The logistic regression model uses first vectorization using scikit-learn's "
                     '[TFIDF](https://en.wikipedia.org/wiki/Tf%E2%80%93idf) Vectorizer  '
@@ -238,25 +237,26 @@ elif model_picker == 'Naive Bayes, NLTK Processed':
 #             st.write("It's from the Onion!")
 
 st.markdown('---')
-st.subheader('Background Info')
-st.write('Taking a dataset of headlines that are either from the Onion or '
-         "from the r/NotTheOnion subreddit, let's develop a model that can "
-         'determine whether or not the headline is an Onion headline or not!'
-         )
-st.write('The Onion is a satirical newspaper that publishes articles '
-         'on current events, oftentimes making everyday events as '
-         'newsworthy. r/NotTheOnion is a subreddit where users can post '
-         'news articles that sound like they belong on the Onion.'
-         )
-st.subheader('Sample of dataset used to develop the model (18000 samples)')
-st.markdown('The dataset used to develop the model is found '
-            '[here. ](https://www.kaggle.com/chrisfilo/onion-or-not)'
-            'The dataset for the model is found on the project '
-            '[Github.](https://github.com/boblandsky/onion_ml/)'
+if st.checkbox('Show background info'):
+    st.subheader('Background Info')
+    st.write('Taking a dataset of headlines that are either from the Onion or '
+            "from the r/NotTheOnion subreddit, let's develop a model that can "
+            'determine whether or not the headline is an Onion headline or not!'
             )
-st.info('1 indicates a headline by the Onion, '
-        'while 0 is a real headline found on r/NotTheOnion. '
-        'The data was originally 24000 samples, and rebalanced to 18000 (9000 samples of each). '
-        'The first five rows are shown below.'
-        )
-st.table(df.head())
+    st.write('The Onion is a satirical newspaper that publishes articles '
+            'on current events, oftentimes making everyday events as '
+            'newsworthy. r/NotTheOnion is a subreddit where users can post '
+            'news articles that sound like they belong on the Onion.'
+            )
+    st.subheader('Sample of dataset used to develop the model (18000 samples)')
+    st.markdown('The dataset used to develop the model is found '
+                '[here. ](https://www.kaggle.com/chrisfilo/onion-or-not)'
+                'The dataset for the model is found on the project '
+                '[Github.](https://github.com/oliverchen415/onion_ml/)'
+                )
+    st.info('1 indicates a headline by the Onion, '
+            'while 0 is a real headline found on r/NotTheOnion. '
+            'The data was originally 24000 samples, and rebalanced to 18000 (9000 samples of each). '
+            'The first five rows are shown below.'
+            )
+    st.table(df.head())
