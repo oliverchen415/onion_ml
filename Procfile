@@ -1,1 +1,1 @@
-web: sh setup.sh && streamlit run onion_or_not.py
+web: sh setup.sh && streamlit run onion_refactor.py
