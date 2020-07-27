@@ -11,7 +11,7 @@ from nltk.tokenize import word_tokenize
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.model_selection import train_test_split
 
-data_url = 'https://github.com/boblandsky/onion_ml/raw/master/onion_resampled.csv'
+data_url = 'https://github.com/oliverchen415/onion_ml/raw/master/onion_resampled.csv'
 df = pd.read_csv(data_url)
 df.drop(columns=['Unnamed: 0'], inplace=True)
 df_headlines = df['text'].values
@@ -63,7 +63,7 @@ st.warning('Running these models can take some time, please be patient.')
 
 if model_picker == 'Logistic Regression, Quick and Dirty':
     st.header('Model used: Logistic Regression')
-    linreg_pickle_url = 'https://github.com/boblandsky/onion_ml/raw/master/linreg.pkl'
+    linreg_pickle_url = 'https://github.com/oliverchen415/onion_ml/raw/master/linreg.pkl'
     clf_adj = pd.read_pickle(linreg_pickle_url)
     score = clf_adj.score(X_test, l_test)
     rounded_score = round(score, 4)*100
@@ -104,8 +104,8 @@ elif model_picker == 'Naive Bayes, NLTK Processed':
                 cleaned_tokens.append(token.lower())
         return cleaned_tokens
 
-    train_url = 'https://github.com/boblandsky/onion_ml/raw/master/train_data.csv'
-    test_url = 'https://github.com/boblandsky/onion_ml/raw/master/test_data.csv'
+    train_url = 'https://github.com/oliverchen415/onion_ml/raw/master/train_data.csv'
+    test_url = 'https://github.com/oliverchen415/onion_ml/raw/master/test_data.csv'
 
     train_data = pd.read_csv(train_url)
     test_data = pd.read_csv(test_url)
@@ -116,7 +116,7 @@ elif model_picker == 'Naive Bayes, NLTK Processed':
     train_data_tuple = list(zip(train_data['0'], train_data['1']))
     test_data_tuple = list(zip(test_data['0'], test_data['1']))
 
-    nb_pickle_url = 'https://github.com/boblandsky/onion_ml/raw/master/nb_nltk.pkl'
+    nb_pickle_url = 'https://github.com/oliverchen415/onion_ml/raw/master/nb_nltk.pkl'
     clf_nb = pd.read_pickle(nb_pickle_url)
     nb_acc = round(classify.accuracy(clf_nb, test_data_tuple), 4)*100
     st.write(f'Accuracy on test set: {nb_acc}%')
