@@ -1,8 +1,9 @@
 import ast
 import string
+
+import numpy as np
 import pandas as pd
 import streamlit as st
-
 from nltk import classify
 from nltk.corpus import stopwords
 from nltk.stem.wordnet import WordNetLemmatizer
