@@ -23,6 +23,7 @@ hl_train, hl_test, l_train, l_test = train_test_split(df_headlines, df_labels, r
 
 nltk.download('stopwords')
 nltk.download('punkt')
+nltk.download('averaged_perceptron_tagger')
 
 vectorizer = TfidfVectorizer()
 
