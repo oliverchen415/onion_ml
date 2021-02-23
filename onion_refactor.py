@@ -4,6 +4,7 @@ import string
 import numpy as np
 import pandas as pd
 import streamlit as st
+import nltk
 from nltk import classify
 from nltk.corpus import stopwords
 from nltk.stem.wordnet import WordNetLemmatizer
@@ -19,6 +20,8 @@ df_headlines = df['text'].values
 df_labels = df['label'].values
 
 hl_train, hl_test, l_train, l_test = train_test_split(df_headlines, df_labels, random_state = 69, test_size = 0.3)
+
+nltk.download('stopwords')
 
 vectorizer = TfidfVectorizer()
 
