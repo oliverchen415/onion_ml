@@ -22,6 +22,7 @@ df_labels = df['label'].values
 hl_train, hl_test, l_train, l_test = train_test_split(df_headlines, df_labels, random_state = 69, test_size = 0.3)
 
 nltk.download('stopwords')
+nltk.download('punkt')
 
 vectorizer = TfidfVectorizer()
 
